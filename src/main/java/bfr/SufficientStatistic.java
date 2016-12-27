@@ -11,9 +11,9 @@ public class SufficientStatistic {
     private int n = 0;
 
     public SufficientStatistic(int numberOfAttributes) {
+        this.centroid = new double[numberOfAttributes];
         this.sum = new double[numberOfAttributes];
         this.sumsq = new double[numberOfAttributes];
-        this.centroid = new double[numberOfAttributes];
     }
 
     private void centr() {
@@ -40,6 +40,7 @@ public class SufficientStatistic {
             sum[i] += vector.getCoordinates().get(i);
             sumsq[i] += Math.pow(vector.getCoordinates().get(i), 2);
         }
+        centr();
     }
 
     public Vector getCentroid() {
@@ -56,7 +57,7 @@ public class SufficientStatistic {
 
     @Override
     public String toString() {
-        centr();
+        //centr();
         return "SufficientStatistic{" +
                 "n=" + n +
                 ", centr=" + Arrays.toString(centroid) +

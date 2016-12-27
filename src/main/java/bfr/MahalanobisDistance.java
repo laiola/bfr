@@ -27,6 +27,10 @@ public class MahalanobisDistance {
     public static double calculate(Vector vector1, Vector vector2) {
         double sigma = 0;
         ArrayList<Double> coords1 = vector1.getCoordinates();
+
+        if (vector2 == null) {
+            System.out.println(vector2);
+        }
         ArrayList<Double> coords2 = vector2.getCoordinates();
 
         int length = coords1.size();
@@ -34,7 +38,10 @@ public class MahalanobisDistance {
         for (int i = 0; i < length; i++) {
             sigma += (Math.pow(coords1.get(i), 2) + Math.pow(coords2.get(i), 2)) / 2
                     - Math.pow(((coords1.get(i) + coords2.get(i)) / 2), 2);
+
+            //sigma += Math.pow(coords1.get(i) - coords2.get(i), 2);
         }
+        //System.out.println(Math.sqrt(sigma));
         return Math.sqrt(sigma);
     }
 

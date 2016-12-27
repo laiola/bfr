@@ -42,4 +42,8 @@ public class RetainedSet {
     public ArrayList<Vector> getVectors() {
         return vectors;
     }
+
+    public int getNumberOfAttributes() {
+        return vectors.get(0).getCoordinates().size();
+    }
 }

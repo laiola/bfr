@@ -28,8 +28,7 @@ public class DiscardSet {
 
     @Override
     public String toString() {
-        return "DiscardSet{" +
-                "statistic=" + statistic.toString() +
+        return "statistic=" + statistic.toString() +
                 '}';
     }
 }
