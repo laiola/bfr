@@ -1,5 +1,6 @@
 package bfr;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,17 +18,15 @@ public class BFR {
 
     public BFR(int numberOfClusters) {
         this.retainedSet = new RetainedSet();
-        this.discardSet = new ArrayList<>(); //DiscardSet(numberOfAttributes);
-        initDiscardSet();
-        this.compressSet = new ArrayList<>(); //CompressSet(numberOfAttributes);
+        this.discardSet = new ArrayList<>(); // DiscardSet(numberOfAttributes);
+        this.compressSet = new ArrayList<>(); // CompressSet(numberOfAttributes);
         this.numberOfClusters = numberOfClusters;
     }
 
     public BFR(int numberOfVectors, int numberOfClusters) {
         this.retainedSet = new RetainedSet(numberOfVectors);
-        this.discardSet = new ArrayList<>(); //new DiscardSet(numberOfAttributes);
-        initDiscardSet();
-        this.compressSet = new ArrayList<>(); //new CompressSet(numberOfAttributes);
+        this.discardSet = new ArrayList<>(); // new DiscardSet(numberOfAttributes);
+        this.compressSet = new ArrayList<>(); // new CompressSet(numberOfAttributes);
         this.numberOfClusters = numberOfClusters;
     }
 
@@ -46,69 +45,55 @@ public class BFR {
         this.confidenceInterval = confidenceInterval;
     }
 
-    private void initDiscardSet() {
-        for (int i = 0; i < numberOfClusters; i++) {
-            discardSet.add(new DiscardSet(NUMBER_OF_ATTRIBUTES));
-        }
-    }
-
     //Initializes the process
     private void init() {
-        //Create Clusters
-        //Set Random Centroids
-        for (int i = 0; i < numberOfClusters; i++) {
-            discardSet.get(i).updateStatistic(Vector.createRandomPoint(-100, 100));
-        }
+        initDS();
         initCS();
         plotClusters();
     }
 
-    /*private void deleteFromRS(Vector del) {
-        retainedSet.getVectors().removeIf(vector -> vector.equals(del));
-    }*/
+    private void initDS() {
+        // Create Clusters
+        for (int i = 0; i < numberOfClusters; i++) {
+            discardSet.add(new DiscardSet(NUMBER_OF_ATTRIBUTES));
+        }
+        // Set Random Centroids
+        for (int i = 0; i < numberOfClusters; i++) {
+            discardSet.get(i).updateStatistic(Vector.createRandomPoint(-100, 100));
+        }
+    }
 
     private void initCS() {
-        //Create sub-clusters
+        // Create sub-clusters
         double distance;
-        //Vector del;
-        //ArrayList<Vector> vectors = retainedSet.getVectors();
-        ListIterator<Vector> iterator = retainedSet.getVectors().listIterator();
+        ListIterator<Vector> rsIterator = retainedSet.getVectors().listIterator();
 
-        while (iterator.hasNext()) {
-            Vector vector1 = iterator.next();
+        while (rsIterator.hasNext()) {
+            Vector vector1 = rsIterator.next();
             Vector vector2 = null;
-            if (iterator.hasNext()) {
-                vector2 = iterator.next();
+            if (rsIterator.hasNext()) {
+                vector2 = rsIterator.next();
             }
             if (vector1 == null || vector2 == null) break;
 
             distance = MahalanobisDistance.calculate(vector1, vector2);
             if (distance < confidenceInterval) { // todo check
+                //confidenceInterval = distance;
                 compressSet.add(new CompressSet(NUMBER_OF_ATTRIBUTES));
-                //iterator.previous();
-                iterator.remove();
+                rsIterator.remove();
                 compressSet.get(compressSet.size()-1).updateStatistic(vector2); // todo check
             }
         }
-
-        /*for (int i = 0, length = vectors.size() - 1; i < length; i++) {
-            distance = MahalanobisDistance.calculate(vectors.get(i), vectors.get(i + 1));
-            if (distance < 1) { // todo check
-                compressSet.add(new CompressSet(numberOfAttributes));
-                del = vectors.get(i);
-                compressSet.get(0).updateStatistic(vectors.get(i));
-                deleteFromRS(del);
-            }
-        }*/
         plotClusters();
     }
 
     private void assignDS() {
         double distance;
 
-        Iterator<Vector> iterator = retainedSet.getVectors().iterator();
-        while (iterator.hasNext()) {
-            Vector vector = iterator.next();
+        // watching rs
+        Iterator<Vector> rsIterator = retainedSet.getVectors().iterator();
+        while (rsIterator.hasNext()) {
+            Vector vector = rsIterator.next();
             for (int i = 0; i < numberOfClusters; i++) {
                 DiscardSet c = discardSet.get(i);
                 distance = MahalanobisDistance.calculate(c, vector);
@@ -116,22 +101,28 @@ public class BFR {
                 if (distance < confidenceInterval) {
                     //confidenceInterval = distance;
                     c.updateStatistic(vector);
-                    iterator.remove();
+                    rsIterator.remove();
                     break;
                 }
+            }
+        }
 
-                //todo it becomes empty
-
-                Iterator<CompressSet> iterator1 = compressSet.iterator();
-                while (iterator1.hasNext()) {
-                    CompressSet aCompressSet = iterator1.next();
-                    distance = MahalanobisDistance.calculate(aCompressSet, c.getCentroid());
-                    if (distance < confidenceInterval) {
-                        //confidenceInterval = distance;
-                        c.updateStatistic(aCompressSet.getCentroid());
-                        iterator1.remove();
-                        continue;
-                    }
+        // watching cs
+        for (int i = 0; i < numberOfClusters; i++) {
+            DiscardSet c = discardSet.get(i);
+            Iterator<CompressSet> csIterator = compressSet.iterator();
+            while (csIterator.hasNext()) {
+                CompressSet aCompressSet = csIterator.next();
+                distance = MahalanobisDistance.calculate(aCompressSet, c.getCentroid());
+                /*JOptionPane.showMessageDialog(null, "size: " + compressSet.size()
+                    + "\nCS centroid: " + aCompressSet.getCentroid()
+                    + "\nRS centroid: " + c.getCentroid()
+                    + "\ndistanceL: " + distance);*/
+                if (distance < confidenceInterval) {
+                    //confidenceInterval = distance;
+                    c.updateStatistic(aCompressSet.getCentroid());
+                    csIterator.remove();
+                    continue;
                 }
             }
         }
@@ -139,16 +130,16 @@ public class BFR {
 
     private void assignCS() {
         double distance;
-        Iterator<Vector> iterator = retainedSet.getVectors().iterator();
+        Iterator<Vector> rsIterator = retainedSet.getVectors().iterator();
 
-        while (iterator.hasNext()) {
-            Vector vector = iterator.next();
+        while (rsIterator.hasNext()) {
+            Vector vector = rsIterator.next();
             for (CompressSet aCompressSet : compressSet) {
                 distance = MahalanobisDistance.calculate(aCompressSet, vector);
-                if (distance < 2) {
+                if (distance < confidenceInterval) {
                     //confidenceInterval = distance;
                     aCompressSet.updateStatistic(vector);
-                    iterator.remove();
+                    rsIterator.remove();
                     break;
                 }
             }
@@ -156,7 +147,9 @@ public class BFR {
     }
 
     private void assignRS() {
+        System.out.println("before: " + retainedSet.getVectors().size());
         retainedSet.updateRS();
+        System.out.println("after: " + retainedSet.getVectors().size());
     }
 
     // TODO
@@ -164,9 +157,9 @@ public class BFR {
         double distance;
         ArrayList<Double> distances = new ArrayList<>();
 
-        Iterator<CompressSet> iterator = compressSet.iterator();
-        while (iterator.hasNext()) {
-            CompressSet tmp = iterator.next();
+        Iterator<CompressSet> csIterator = compressSet.iterator();
+        while (csIterator.hasNext()) {
+            CompressSet tmp = csIterator.next();
             for (int i = 0; i < numberOfClusters; i++) {
                 DiscardSet c = discardSet.get(i);
                 distance = MahalanobisDistance.calculate(c, tmp.getCentroid());
@@ -181,13 +174,13 @@ public class BFR {
                 }
             }
             discardSet.get(id).updateStatistic(tmp.getCentroid());
-            iterator.remove();
+            csIterator.remove();
             distances = new ArrayList<>();
         }
 
-        Iterator<Vector> iterator1 = retainedSet.getVectors().iterator();
-        while (iterator1.hasNext()) {
-            Vector vector = iterator1.next();
+        Iterator<Vector> rsIterator = retainedSet.getVectors().iterator();
+        while (rsIterator.hasNext()) {
+            Vector vector = rsIterator.next();
             for (int i = 0; i < numberOfClusters; i++) {
                 DiscardSet c = discardSet.get(i);
                 distance = MahalanobisDistance.calculate(c, vector);
@@ -202,7 +195,7 @@ public class BFR {
                 }
             }
             discardSet.get(id).updateStatistic(vector);
-            iterator1.remove();
+            rsIterator.remove();
             distances = new ArrayList<>();
         }
 
@@ -226,6 +219,7 @@ public class BFR {
             // Assign points to the closer sub-cluster
             if (compressSet.size() == 0) {
                 initCS();
+                assignCS();
             }
             else assignCS();
 

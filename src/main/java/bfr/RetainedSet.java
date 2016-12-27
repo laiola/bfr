@@ -34,6 +34,7 @@ public class RetainedSet {
 
     // TODO
     public void updateRS() {
+        bfrBuffer.UpdateBuffer();
         while (!bfrBuffer.isEmpty() && vectors.size() < size) {
             vectors.add(bfrBuffer.remove());
         }
