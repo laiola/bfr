@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Vector {
-    private int size;
+    private final int size;
     private ArrayList<Double> coordinates;
     private int cluster_number = 0;
 

@@ -65,4 +65,17 @@ public class SufficientStatistic {
                 ", sumsq=" + Arrays.toString(sumsq) +
                 '}';
     }
+
+    public void update(CompressSet tmp) {
+        SufficientStatistic tempStat = tmp.getStatistic();
+        double[] tmpsum = tempStat.getSum();
+        double[] tmpsumsq = tempStat.getSumsq();
+
+        n += tempStat.getN();
+        for (int i = 0, length = sum.length; i < length; i++) {
+            sum[i] += tmpsum[i];
+            sumsq[i] += tmpsumsq[i];
+        }
+        centr();
+    }
 }

@@ -31,4 +31,8 @@ public class DiscardSet {
         return "statistic=" + statistic.toString() +
                 '}';
     }
+
+    public void updateStatistic(CompressSet tmp) {
+        this.statistic.update(tmp);
+    }
 }

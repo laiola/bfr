@@ -19,7 +19,7 @@ public class MahalanobisDistance {
         double[] sumsq = statistic.getSumsq();
 
         for (int i = 0; i < length; i++) {
-            sigma += sumsq[i] / number - Math.pow((sum[i] / number), 2);
+            sigma += (sumsq[i] + Math.pow(coords.get(i), 2) )/ number - Math.pow(((sum[i] + coords.get(i)) / number), 2);
         }
         return Math.sqrt(sigma);
     }
@@ -27,10 +27,6 @@ public class MahalanobisDistance {
     public static double calculate(Vector vector1, Vector vector2) {
         double sigma = 0;
         ArrayList<Double> coords1 = vector1.getCoordinates();
-
-        if (vector2 == null) {
-            System.out.println(vector2);
-        }
         ArrayList<Double> coords2 = vector2.getCoordinates();
 
         int length = coords1.size();

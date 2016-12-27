@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class BFRBuffer extends BoundedFifoBuffer {
+    public static final int MIN = Integer.MIN_VALUE / 2;
+    public static final int MAX = Integer.MAX_VALUE / 2;
+
     public static final int DEFAULT_SIZE = 1000;
     private final ArrayList<Vector> data; // TODO integration
-    private int size;
+    private final int size;
 
     public BFRBuffer() {
         super(DEFAULT_SIZE);
@@ -57,13 +60,11 @@ public class BFRBuffer extends BoundedFifoBuffer {
     }
 
     protected void UpdateBuffer() {
-        int i = 0;
         Iterator<Vector> iterator = data.listIterator();
-        while (!data.isEmpty() && this.size() < size) {
+        while (iterator.hasNext() && !this.isFull()) {
             Vector tmp = iterator.next();
             add(tmp);
             iterator.remove();
-            ++i;
         }
     }
 }
