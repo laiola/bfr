@@ -30,3 +30,5 @@ Here's BFR “Galaxies” Picture
   * Add **Ns, SUMs, SUMSQs**
 4. Consider merging compressed sets in the **CS**
 5. If this is the last round, merge all compressed sets in the **CS** and all **RS** points into their nearest cluster
+
+[Read more] (http://infolab.stanford.edu/~ullman/mmds/book.pdf)
