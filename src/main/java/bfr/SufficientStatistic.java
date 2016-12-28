@@ -66,7 +66,7 @@ public class SufficientStatistic {
                 '}';
     }
 
-    public void update(CompressSet tmp) {
+    public void update(Cluster tmp) {
         SufficientStatistic tempStat = tmp.getStatistic();
         double[] tmpsum = tempStat.getSum();
         double[] tmpsumsq = tempStat.getSumsq();

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class MahalanobisDistance {
 
-    public static double calculate(DiscardSet ds, Vector vector) {
+    public static double calculate(Cluster ds, Vector vector) {
         double sigma = 0;
         ArrayList<Double> coords = vector.getCoordinates();
         int length = coords.size();
