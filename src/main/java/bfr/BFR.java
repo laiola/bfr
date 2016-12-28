@@ -5,14 +5,16 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 public class BFR {
-    private static final int MAX_ITERATIONS = 20;
+    private static final int MAX_ITERATIONS = 100;
     public static final int NUMBER_OF_ATTRIBUTES = 4;
     private final ArrayList<Cluster> discardSet;
     private final ArrayList<Cluster> compressSet;
     private final RetainedSet retainedSet;
     //public int numberOfAttributes;
     private int numberOfClusters;
-    private double confidenceInterval = 500.0;
+    private double confidenceInterval = 250.0;
+    private boolean isUpdateDS = false;
+    private boolean isUpdateCS = false;
 
     public BFR(int numberOfClusters) {
         this.retainedSet = new RetainedSet();
@@ -21,7 +23,7 @@ public class BFR {
         this.numberOfClusters = numberOfClusters;
     }
 
-    public BFR(int numberOfVectors, int numberOfClusters) {
+    public BFR(int numberOfClusters, int numberOfVectors) {
         this.retainedSet = new RetainedSet(numberOfVectors);
         this.discardSet = new ArrayList<>(); // new DiscardSet(numberOfAttributes);
         this.compressSet = new ArrayList<>(); // new CompressSet(numberOfAttributes);
@@ -29,7 +31,7 @@ public class BFR {
     }
 
     public static void main(String[] args) {
-        BFR bfr = new BFR(5);
+        BFR bfr = new BFR(5, 10000);
         bfr.init();
         bfr.calculate();
         bfr.finish();
@@ -103,6 +105,7 @@ public class BFR {
                     //confidenceInterval = distance;
                     c.updateStatistic(vector);
                     rsIterator.remove();
+                    isUpdateDS = true;
                     break;
                 }
             }
@@ -121,8 +124,9 @@ public class BFR {
                     + "\ndistanceL: " + distance);*/
                 if (distance < confidenceInterval) {
                     //confidenceInterval = distance;
-                    ds.updateStatistic(cs.getCentroid());
+                    ds.updateStatistic(cs);
                     csIterator.remove();
+                    isUpdateDS = true;
                     break;
                 }
             }
@@ -140,6 +144,7 @@ public class BFR {
                     //confidenceInterval = distance;
                     cs.updateStatistic(vector);
                     rsIterator.remove();
+                    isUpdateCS = true;
                     break;
                 }
             }
@@ -157,12 +162,13 @@ public class BFR {
         double distance;
         ArrayList<Double> distances = new ArrayList<>();
 
+        // cs
         Iterator<Cluster> csIterator = compressSet.iterator();
         while (csIterator.hasNext()) {
-            Cluster tmp = csIterator.next();
+            Cluster cs = csIterator.next();
             for (int i = 0; i < numberOfClusters; i++) {
-                Cluster c = discardSet.get(i);
-                distance = MahalanobisDistance.calculate(c, tmp.getCentroid());
+                Cluster ds = discardSet.get(i);
+                distance = MahalanobisDistance.calculate(ds, cs.getCentroid());
                 distances.add(distance);
             }
             int id = 0;
@@ -173,17 +179,18 @@ public class BFR {
                     id = i;
                 }
             }
-            discardSet.get(id).updateStatistic(tmp);
+            discardSet.get(id).updateStatistic(cs);
             csIterator.remove();
             distances = new ArrayList<>();
         }
 
+        // retained vectors
         Iterator<Vector> rsIterator = retainedSet.getVectors().iterator();
         while (rsIterator.hasNext()) {
             Vector vector = rsIterator.next();
             for (int i = 0; i < numberOfClusters; i++) {
-                Cluster c = discardSet.get(i);
-                distance = MahalanobisDistance.calculate(c, vector);
+                Cluster ds = discardSet.get(i);
+                distance = MahalanobisDistance.calculate(ds, vector);
                 distances.add(distance);
                 }
             int id = 0;
@@ -204,13 +211,12 @@ public class BFR {
 
     private void calculate() {
         boolean finish = false;
+
         int iteration = 0;
 
         while (!finish) {
-
-            if (iteration == 1) {
-                System.out.println();
-            }
+            isUpdateCS = false;
+            isUpdateDS = false;
             assignDS();
 
             if (compressSet.size() == 0) {
@@ -221,13 +227,17 @@ public class BFR {
                 assignCS();
             }
 
+            // if vectors in buffer is not enough close
+            // compress this vectors and update points in buffer
+            if (!isUpdateDS && !isUpdateCS) {
+                finish();
+            }
+
             assignRS();
 
             iteration++;
 
-
             System.out.println("Iteration: " + iteration);
-            //System.out.println("Centroid distances: " + distance);
             plotClusters();
 
             if (retainedSet.getVectors().isEmpty() || iteration > MAX_ITERATIONS) {
