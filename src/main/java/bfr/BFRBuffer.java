@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class BFRBuffer extends BoundedFifoBuffer {
-    public static final int MIN = Integer.MIN_VALUE / 2;
-    public static final int MAX = Integer.MAX_VALUE / 2;
+    public static final int MIN = 0;
+    public static final int MAX = 10;
 
     public static final int DEFAULT_SIZE = 1000;
     private final ArrayList<Vector> data; // TODO integration
@@ -16,7 +16,7 @@ public class BFRBuffer extends BoundedFifoBuffer {
     public BFRBuffer() {
         super(DEFAULT_SIZE);
         this.size = DEFAULT_SIZE;
-        this.data = Vector.createRandomPoints(-1000, 1000, DEFAULT_SIZE * 2); // TODO integration
+        this.data = Vector.createRandomPoints(MIN, MAX, DEFAULT_SIZE * 2); // TODO integration
         Iterator<Vector> iterator = data.listIterator();
         int i = 0;
         while (iterator.hasNext() && i < DEFAULT_SIZE) {
@@ -33,7 +33,7 @@ public class BFRBuffer extends BoundedFifoBuffer {
     public BFRBuffer(int size) {
         super(size);
         this.size = size;
-        this.data = Vector.createRandomPoints(-1000, 1000, size * 10); // TODO integration
+        this.data = Vector.createRandomPoints(MIN, MAX, size * 10); // TODO integration
         Iterator<Vector> iterator = data.listIterator();
         int i = 0;
         while (iterator.hasNext() && i < size) {

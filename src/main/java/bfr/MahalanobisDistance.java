@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Calculates Mahalanobis distance by using sufficient statistic
  * sigma = SUMSQi/N-(SUMi/N)^2
- * distance = sqrt(sigma)
+ * deviation = sqrt(sigma)
  */
 public class MahalanobisDistance {
 
