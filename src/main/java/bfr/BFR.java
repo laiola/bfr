@@ -10,9 +10,7 @@ public class BFR {
     private final ArrayList<Cluster> discardSet;
     private final ArrayList<Cluster> compressSet;
     private final RetainedSet retainedSet;
-    //public int numberOfAttributes;
     private int numberOfClusters;
-    private double confidenceInterval = 250.0;
     private boolean isUpdateDS = false;
     private boolean isUpdateCS = false;
 
@@ -31,18 +29,17 @@ public class BFR {
     }
 
     public static void main(String[] args) {
-        BFR bfr = new BFR(5, 10000);
-        bfr.init();
-        bfr.calculate();
-        bfr.finish();
-    }
-
-    public double getConfidenceInterval() {
-        return confidenceInterval;
-    }
-
-    public void setConfidenceInterval(double confidenceInterval) {
-        this.confidenceInterval = confidenceInterval;
+        for (int i = 0; i < 2; i++) {
+            BFR bfr = new BFR(5, 10000);
+            bfr.init();
+            bfr.calculate();
+            bfr.finish();
+            int res = 0;
+            for (Cluster ds: bfr.discardSet) {
+                res += ds.getStatistic().getN();
+            }
+            System.out.println("\nres[" + i + "]: " + res);
+        }
     }
 
     //Initializes the process
@@ -64,7 +61,6 @@ public class BFR {
 
     private void initCS() {
         // Create sub-clusters
-        double distance;
         ListIterator<Vector> rsIterator = retainedSet.getVectors().listIterator();
 
         while (rsIterator.hasNext()) {
@@ -85,12 +81,10 @@ public class BFR {
                 rsIterator.remove();
             }
         }
-        plotClusters();
+        //plotClusters();
     }
 
     private void assignDS() {
-        double distance;
-
         // watching rs
         Iterator<Vector> rsIterator = retainedSet.getVectors().iterator();
         while (rsIterator.hasNext()) {
@@ -129,7 +123,6 @@ public class BFR {
         while (rsIterator.hasNext()) {
             Vector vector = rsIterator.next();
             for (Cluster cs : compressSet) {
-                double distance = MahalanobisDistance.calculate(cs, vector);
                 if (ConfidenceInterval.isEntered(cs, vector)) {
                     cs.updateStatistic(vector);
                     rsIterator.remove();
@@ -195,7 +188,7 @@ public class BFR {
             distances = new ArrayList<>();
         }
 
-       plotClusters();
+        plotClusters();
     }
 
     private void calculate() {
@@ -227,7 +220,7 @@ public class BFR {
             iteration++;
 
             System.out.println("Iteration: " + iteration);
-            plotClusters();
+            //plotClusters();
 
             if (retainedSet.getVectors().isEmpty() || iteration > MAX_ITERATIONS) {
                 finish = true;
