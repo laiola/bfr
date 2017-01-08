@@ -11,21 +11,26 @@ public class ConfidenceInterval {
     private static final int COEFFICIENT = 1;
 
     public static boolean isEntered(Cluster cluster, Vector vector) {
-        double distance = MahalanobisDistance.calculate(cluster, vector);
+        MahalanobisDistance md = new MahalanobisDistance();
+        double distance = md.calculate(cluster, vector);
+        double sigma = md.getSigma();
 
         int n = cluster.getStatistic().getN() + 1;
-        double deviation = Math.sqrt(MahalanobisDistance.getSigma()) / n;
 
+        double deviation = sigma / n;
         double standardError = deviation / Math.sqrt(n);
 
         return distance < standardError * 2;
     }
 
     public static boolean isEntered(Vector vector1, Vector vector2) {
-        double distance = MahalanobisDistance.calculate(vector1, vector2);
+        MahalanobisDistance md = new MahalanobisDistance();
+        double distance = md.calculate(vector1, vector2);
+        double sigma = md.getSigma();
 
         int n = 2;
-        double deviation = Math.sqrt(MahalanobisDistance.getSigma()) / n;
+
+        double deviation = sigma / n;
         double standardError = deviation / Math.sqrt(n);
 
         return distance < standardError * 2;

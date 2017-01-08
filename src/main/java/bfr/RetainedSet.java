@@ -28,6 +28,15 @@ public class RetainedSet {
         }
     }
 
+    public RetainedSet(ArrayList<Vector> vectors) {
+        this.bfrBuffer = new BFRBuffer(vectors);
+        this.size = BFRBuffer.DEFAULT_SIZE;
+
+        for (int i = 0; i < BFRBuffer.DEFAULT_SIZE; i++) {
+            vectors.add(bfrBuffer.remove());
+        }
+    }
+
     public boolean isEnd() {
         return bfrBuffer.isEmpty();
     }

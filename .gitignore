@@ -2,6 +2,7 @@
 *.iml
 
 target/
+src/test/resources/100_000.txt
 
 *.class
 
