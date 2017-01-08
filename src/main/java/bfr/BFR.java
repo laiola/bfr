@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 public class BFR {
-    public static final int NUMBER_OF_ATTRIBUTES = 100;
+    static final int NUMBER_OF_ATTRIBUTES = 100;
     private static final int MAX_ITERATIONS = 200;
     private final ArrayList<Cluster> discardSet;
     private final ArrayList<Cluster> compressSet;
@@ -19,22 +19,6 @@ public class BFR {
         this.discardSet = new ArrayList<>();
         this.compressSet = new ArrayList<>();
         this.retainedSet = new RetainedSet(vectors);
-    }
-
-    public BFR(int numberOfClusters) {
-        this.retainedSet = new RetainedSet();
-        this.discardSet = new ArrayList<>(); // DiscardSet(numberOfAttributes);
-        this.compressSet = new ArrayList<>(); // CompressSet(numberOfAttributes);
-        this.numberOfClusters = numberOfClusters;
-        this.numberOfAttributes = NUMBER_OF_ATTRIBUTES;
-    }
-
-    public BFR(int numberOfClusters, int numberOfVectors) {
-        this.retainedSet = new RetainedSet(numberOfVectors);
-        this.discardSet = new ArrayList<>(); // new DiscardSet(numberOfAttributes);
-        this.compressSet = new ArrayList<>(); // new CompressSet(numberOfAttributes);
-        this.numberOfClusters = numberOfClusters;
-        this.numberOfAttributes = NUMBER_OF_ATTRIBUTES;
     }
 
     /*public static void main(String[] args) {

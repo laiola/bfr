@@ -18,7 +18,7 @@ public class Vector {
     }
 
     //Creates random point
-    protected static Vector createRandomPoint(int min, int max) {
+    static Vector createRandomPoint(int min, int max) {
         Random r = new Random();
         int n = BFR.NUMBER_OF_ATTRIBUTES ;
         ArrayList<Double> result = new ArrayList<>(n);
@@ -29,7 +29,7 @@ public class Vector {
         return new Vector(result);
     }
 
-    protected static ArrayList<Vector> createRandomPoints(int min, int max, int number) {
+    static ArrayList<Vector> createRandomPoints(int min, int max, int number) {
         ArrayList<Vector> result = new ArrayList<>(number);
         for (int i = 0; i < number; i++) {
             result.add(createRandomPoint(min, max));

@@ -10,24 +10,6 @@ public class RetainedSet {
     private final ArrayList<Vector> vectors = new ArrayList<>();
     private final int size;
 
-    public RetainedSet() {
-        this.bfrBuffer = new BFRBuffer();
-        this.size = BFRBuffer.DEFAULT_SIZE;
-
-        for (int i = 0; i < BFRBuffer.DEFAULT_SIZE; i++) {
-            vectors.add(bfrBuffer.remove());
-        }
-    }
-
-    public RetainedSet(int size) {
-        this.bfrBuffer = new BFRBuffer(size);
-        this.size = size;
-
-        for (int i = 0; i < size; i++) {
-            vectors.add(bfrBuffer.remove());
-        }
-    }
-
     public RetainedSet(ArrayList<Vector> vectors) {
         this.bfrBuffer = new BFRBuffer(vectors);
         this.size = BFRBuffer.DEFAULT_SIZE;
@@ -41,7 +23,6 @@ public class RetainedSet {
         return bfrBuffer.isEmpty();
     }
 
-    // TODO
     public void updateRS() {
         bfrBuffer.UpdateBuffer();
         while (!bfrBuffer.isEmpty() && vectors.size() < size) {
@@ -51,9 +32,5 @@ public class RetainedSet {
 
     public ArrayList<Vector> getVectors() {
         return vectors;
-    }
-
-    public int getNumberOfAttributes() {
-        return vectors.get(0).getCoordinates().size();
     }
 }

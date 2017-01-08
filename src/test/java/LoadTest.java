@@ -12,14 +12,14 @@ public class LoadTest {
     private static final String PATH = "src/test/resources/100_000.txt";
 
     public static void main (String[] args) throws IOException {
-        ArrayList<Vector> vectors = new BFRBuffer().getData(PATH);
+        ArrayList<Vector> vectors = BFRBuffer.getData(PATH);
         BFR algorithm = new BFR(5, vectors);
         algorithm.bfr();
     }
 
     @Test
     public void testSize() {
-        ArrayList<Vector> vectors = new BFRBuffer().getData(PATH);
+        ArrayList<Vector> vectors = BFRBuffer.getData(PATH);
         assertEquals(100000, vectors.size());
         assertEquals(100, vectors.get(0).getCoordinates().size());
     }
