@@ -68,13 +68,13 @@ public class BFR {
         for (int i = 0; i < numberOfClusters; i++) {
             discardSet.add(new Cluster(numberOfAttributes));
         }
-        // Set Random Centroids
+        /*// Set Random Centroids
         for (int i = 0; i < numberOfClusters; i++) {
             discardSet.get(i).updateStatistic(Vector.createRandomPoint(BFRBuffer.MIN, BFRBuffer.MAX));
-        }
+        }*/
 
         // Set Centroids
-        /*for (int i = 0, j = 1; i < numberOfClusters; i++) {
+        for (int i = 0, j = 1; i < numberOfClusters; i++) {
             ArrayList<Double> vector = new ArrayList<>(numberOfAttributes);
             vector.add((double) 0);
             for (int k = 1; k < numberOfAttributes; k++) {
@@ -82,7 +82,7 @@ public class BFR {
             }
             j++;
             discardSet.get(i).updateStatistic(new Vector(vector));
-        }*/
+        }
     }
 
     private void initCS() {
