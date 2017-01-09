@@ -1,4 +1,3 @@
-import bfr.BFR;
 import bfr.BFRBuffer;
 import bfr.Vector;
 import org.junit.Test;
@@ -8,13 +7,18 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class LoadTest {
+public class LoadTest extends ITest{
     private static final String PATH = "src/test/resources/100_000.txt";
 
     public static void main (String[] args) throws IOException {
-        ArrayList<Vector> vectors = BFRBuffer.getData(PATH);
-        BFR algorithm = new BFR(5, vectors);
-        algorithm.bfr();
+        new LoadTest().test();
+        /*
+        [23300443361, 23644617582, 23247538074, 23151162193, 24155564234, 22926721756, 23787779241, 22771874033, 22716148776, 22808545867]
+         */
+    }
+
+    public void test() {
+        super.test(PATH);
     }
 
     @Test
