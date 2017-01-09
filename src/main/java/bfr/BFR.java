@@ -6,7 +6,7 @@ import java.util.ListIterator;
 
 public class BFR {
     static final int NUMBER_OF_ATTRIBUTES = 100;
-    private static final int MAX_ITERATIONS = 200;
+    private static final int MAX_ITERATIONS = 2000;
     private final ArrayList<Cluster> discardSet;
     private final ArrayList<Cluster> compressSet;
     private final RetainedSet retainedSet;
@@ -53,7 +53,7 @@ public class BFR {
             for (Cluster ds: discardSet) {
                 res += ds.getStatistic().getN();
             }
-            System.out.println("\nres[" + i + "]: " + res);
+            //System.out.println("\nres[" + i + "]: " + res);
         }
     }
 
@@ -107,7 +107,7 @@ public class BFR {
                 rsIterator.remove();
             }
         }
-        System.out.println("initCS()");
+        //System.out.println("initCS()");
         //plotClusters();
     }
 
@@ -174,9 +174,9 @@ public class BFR {
     }
 
     private void assignRS() {
-        System.out.println("before: " + retainedSet.getVectors().size());
+        //System.out.println("before: " + retainedSet.getVectors().size());
         retainedSet.updateRS();
-        System.out.println("after: " + retainedSet.getVectors().size());
+        //System.out.println("after: " + retainedSet.getVectors().size());
     }
 
     private void finish() {
@@ -257,13 +257,17 @@ public class BFR {
 
             iteration++;
 
-            System.out.println("Iteration: " + iteration);
+            //System.out.println("Iteration: " + iteration);
             //plotClusters();
 
             if (retainedSet.getVectors().isEmpty() || iteration > MAX_ITERATIONS) {
                 finish = true;
             }
         }
+    }
+
+    public ArrayList<Cluster> getDiscardSet() {
+        return discardSet;
     }
 
     private void plotClusters() {

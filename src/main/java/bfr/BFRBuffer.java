@@ -12,7 +12,7 @@ public class BFRBuffer extends BoundedFifoBuffer {
     public static final int MIN = 0;
     public static final int MAX = 10;
 
-    public static final int DEFAULT_SIZE = 1000;
+    public static final int DEFAULT_SIZE = 100;
     private final ArrayList<Vector> data; // TODO integration
     private final int size;
 

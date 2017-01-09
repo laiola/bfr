@@ -78,4 +78,27 @@ public class SufficientStatistic {
         }
         centr();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SufficientStatistic)) return false;
+
+        SufficientStatistic that = (SufficientStatistic) o;
+
+        if (n != that.n) return false;
+        if (!Arrays.equals(sum, that.sum)) return false;
+        if (!Arrays.equals(sumsq, that.sumsq)) return false;
+        return Arrays.equals(centroid, that.centroid);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(sum);
+        result = 31 * result + Arrays.hashCode(sumsq);
+        result = 31 * result + Arrays.hashCode(centroid);
+        result = 31 * result + n;
+        return result;
+    }
 }
