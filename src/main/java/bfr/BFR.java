@@ -6,7 +6,7 @@ import java.util.ListIterator;
 
 public class BFR {
     static final int NUMBER_OF_ATTRIBUTES = 100;
-    private static final int MAX_ITERATIONS = 200;
+    private static final int MAX_ITERATIONS = 2000;
     private final ArrayList<Cluster> discardSet;
     private final ArrayList<Cluster> compressSet;
     private final RetainedSet retainedSet;
@@ -266,16 +266,20 @@ public class BFR {
         }
     }
 
+    public ArrayList<Cluster> getDiscardSet() {
+        return discardSet;
+    }
+
     private void plotClusters() {
-//        System.out.println("rS: " + retainedSet.getVectors().size());
-//        System.out.println("discardSet " + discardSet.size());
-//        for (int i = 0; i < numberOfClusters; i++) {
-//            System.out.println(discardSet.get(i).toString());
-//        }
-//        System.out.println("compressSet " + compressSet.size());
-//        for (int i = 0; i < compressSet.size() && !compressSet.isEmpty(); i++) {
-//            System.out.println(compressSet.get(i).toString());
-//        }
-//        System.out.println("+++++++++++++++++++");
+        System.out.println("rS: " + retainedSet.getVectors().size());
+        System.out.println("discardSet " + discardSet.size());
+        for (int i = 0; i < numberOfClusters; i++) {
+            System.out.println(discardSet.get(i).toString());
+        }
+        System.out.println("compressSet " + compressSet.size());
+        for (int i = 0; i < compressSet.size() && !compressSet.isEmpty(); i++) {
+            System.out.println(compressSet.get(i).toString());
+        }
+        System.out.println("+++++++++++++++++++");
     }
 }
