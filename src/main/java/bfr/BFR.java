@@ -167,8 +167,7 @@ public class BFR {
             if (cs1 == null || cs2 == null) break;
 
             if (ConfidenceInterval.isEntered(cs1, cs2)) {
-                int index = csIterator.previousIndex();
-                compressSet.get(index).updateStatistic(cs2);
+                cs1.updateStatistic(cs2);
                 csIterator.remove();
             }
         }
