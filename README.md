@@ -1,3 +1,5 @@
+[Download data for testing] (https://drive.google.com/file/d/0BzNv2kZu4HnebXNBQnVqNHVPdG8/view?usp=sharing)
+
 # bfr
 BFR(Bradley-Fayyad-Reina) is a variant of k-means designed to handle very large (disk-resident) data sets.
 
