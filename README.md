@@ -1,9 +1,9 @@
+[Download data for testing] (https://drive.google.com/file/d/0BzNv2kZu4HnebXNBQnVqNHVPdG8/view?usp=sharing)
+
 # bfr
 BFR(Bradley-Fayyad-Reina) is a variant of k-means designed to handle very large (disk-resident) data sets.
 
 Here's BFR “Galaxies” Picture
-
-[Download data for testing] (https://drive.google.com/file/d/0BzNv2kZu4HnebXNBQnVqNHVPdG8/view?usp=sharing)
 
 ![alt text](https://github.com/laiola/bfr/blob/master/src/main/java/resources/%E2%80%9CGalaxies%E2%80%9D%20Picture.PNG "“Galaxies” Picture")
 
