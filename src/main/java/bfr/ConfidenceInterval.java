@@ -35,4 +35,17 @@ public class ConfidenceInterval {
 
         return distance < standardError * 2;
     }
+
+    public static boolean isEntered(Cluster cs1, Cluster cs2) {
+        MahalanobisDistance md = new MahalanobisDistance();
+        double distance = md.calculate(cs1, cs2);
+        double sigma = md.getSigma();
+
+        int n = cs1.getStatistic().getN() + cs2.getStatistic().getN();
+
+        double deviation = sigma / n;
+        double standardError = deviation / Math.sqrt(n);
+
+        return distance < standardError * 2;
+    }
 }

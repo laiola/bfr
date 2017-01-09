@@ -51,4 +51,27 @@ public class MahalanobisDistance {
     public double getSigma() {
         return msigma;
     }
+
+    public double calculate(Cluster cs1, Cluster cs2) {
+        double distance = 0;
+        ArrayList<Double> cs1_centroid = cs1.getCentroid().getCoordinates();
+        ArrayList<Double> cs2_centroid = cs2.getCentroid().getCoordinates();
+
+        int length = cs1_centroid.size();
+        SufficientStatistic statisticCS1 = cs1.getStatistic();
+        SufficientStatistic statisticCS2 = cs2.getStatistic();
+
+        int number = statisticCS1.getN() + statisticCS2.getN();
+        double[] sum = statisticCS1.getSum();
+        double[] sumsq = statisticCS1.getSumsq();
+        msigma = 0;
+
+        for (int i = 0; i < length; i++) {
+            double sigma = (sumsq[i] + Math.pow(cs2_centroid.get(i), 2) )/ number
+                    - Math.pow(((sum[i] + cs2_centroid.get(i)) / number), 2);
+            distance += Math.pow(((cs2_centroid.get(i) - cs1_centroid.get(i)) / Math.sqrt(sigma)), 2);
+            msigma += Math.sqrt(sigma);
+        }
+        return Math.sqrt(distance);
+    }
 }

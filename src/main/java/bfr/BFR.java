@@ -72,6 +72,17 @@ public class BFR {
         for (int i = 0; i < numberOfClusters; i++) {
             discardSet.get(i).updateStatistic(Vector.createRandomPoint(BFRBuffer.MIN, BFRBuffer.MAX));
         }
+
+        // Set Centroids
+        /*for (int i = 0, j = 1; i < numberOfClusters; i++) {
+            ArrayList<Double> vector = new ArrayList<>(numberOfAttributes);
+            vector.add((double) 0);
+            for (int k = 1; k < numberOfAttributes; k++) {
+                vector.add((double) j);
+            }
+            j++;
+            discardSet.get(i).updateStatistic(new Vector(vector));
+        }*/
     }
 
     private void initCS() {
@@ -142,6 +153,23 @@ public class BFR {
                     rsIterator.remove();
                     break;
                 }
+            }
+        }
+
+        // Merging compressed sets in the CS
+        ListIterator<Cluster> csIterator = compressSet.listIterator();
+        while (csIterator.hasNext()) {
+            Cluster cs1 = csIterator.next();
+            Cluster cs2 = null;
+            if (csIterator.hasNext()) {
+                cs2 = csIterator.next();
+            }
+            if (cs1 == null || cs2 == null) break;
+
+            if (ConfidenceInterval.isEntered(cs1, cs2)) {
+                int index = csIterator.previousIndex();
+                compressSet.get(index).updateStatistic(cs2);
+                csIterator.remove();
             }
         }
     }
