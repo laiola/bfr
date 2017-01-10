@@ -1,16 +1,16 @@
 package bfr;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Buffer of points that are not close enough to sub-clusters or cluster
  */
 public class RetainedSet {
     private final BFRBuffer bfrBuffer;
-    private final ArrayList<Vector> vectors = new ArrayList<>();
+    private final CopyOnWriteArrayList<Vector> vectors = new CopyOnWriteArrayList<>();
     private final int size;
 
-    public RetainedSet(ArrayList<Vector> vectors) {
+    public RetainedSet(CopyOnWriteArrayList<Vector> vectors) {
         this.bfrBuffer = new BFRBuffer(vectors);
         this.size = BFRBuffer.DEFAULT_SIZE;
 
@@ -30,7 +30,7 @@ public class RetainedSet {
         }
     }
 
-    public ArrayList<Vector> getVectors() {
+    public CopyOnWriteArrayList<Vector> getVectors() {
         return vectors;
     }
 }

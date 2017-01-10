@@ -7,27 +7,30 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BFRBuffer extends BoundedFifoBuffer {
     public static final int MIN = 0;
     public static final int MAX = 10;
 
     public static final int DEFAULT_SIZE = 100;
-    private final ArrayList<Vector> data; // TODO integration
+    private final CopyOnWriteArrayList<Vector> data; // TODO integration
     private final int size;
 
-    public BFRBuffer(ArrayList<Vector> vectors) {
+    public BFRBuffer(CopyOnWriteArrayList<Vector> vectors) {
         super(DEFAULT_SIZE);
         this.size = DEFAULT_SIZE;
         this.data = vectors;
         Iterator<Vector> iterator = data.listIterator();
+        CopyOnWriteArrayList<Vector> temp = new CopyOnWriteArrayList();
         int i = 0;
         while (iterator.hasNext() && i < DEFAULT_SIZE) {
             Vector tmp = iterator.next();
             add(tmp);
-            iterator.remove();
+            temp.add(tmp);
             ++i;
         }
+        data.removeAll(temp);
     }
 
     public static ArrayList<Vector> getData(String file) {
@@ -62,11 +65,14 @@ public class BFRBuffer extends BoundedFifoBuffer {
     }
 
     protected void UpdateBuffer() {
+        CopyOnWriteArrayList<Vector> temp = new CopyOnWriteArrayList<>();
+
         Iterator<Vector> iterator = data.listIterator();
         while (iterator.hasNext() && !this.isFull()) {
             Vector tmp = iterator.next();
             add(tmp);
-            iterator.remove();
+            temp.add(tmp);
         }
+        data.removeAll(temp);
     }
 }
