@@ -57,6 +57,14 @@ public class BFR {
         }
     }
 
+    public void getInformation() {
+        int i = 1;
+        for (Cluster ds: discardSet) {
+            System.out.println("[" + i + "]: " + ds.getStatistic().getN());
+            i++;
+        }
+    }
+
     //Initializes the process
     private void init() {
         initDS(); // initialization of clusters
@@ -270,7 +278,7 @@ public class BFR {
         return discardSet;
     }
 
-    private void plotClusters() {
+    private void plotClusters() {/*
         System.out.println("rS: " + retainedSet.getVectors().size());
         System.out.println("discardSet " + discardSet.size());
         for (int i = 0; i < numberOfClusters; i++) {
@@ -280,6 +288,6 @@ public class BFR {
         for (int i = 0; i < compressSet.size() && !compressSet.isEmpty(); i++) {
             System.out.println(compressSet.get(i).toString());
         }
-        System.out.println("+++++++++++++++++++");
+        System.out.println("+++++++++++++++++++");*/
     }
 }

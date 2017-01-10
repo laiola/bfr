@@ -16,6 +16,7 @@ public class ITest {
 
             long start = System.nanoTime();
             algorithm.bfr();
+            algorithm.getInformation();
             long end = System.nanoTime();
             times.add(end - start);
         }

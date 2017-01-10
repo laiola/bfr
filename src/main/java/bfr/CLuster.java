@@ -36,4 +36,20 @@ public class Cluster {
     public void updateStatistic(Cluster tmp) {
         this.statistic.update(tmp);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cluster)) return false;
+
+        Cluster cluster = (Cluster) o;
+
+        return statistic != null ? statistic.equals(cluster.statistic) : cluster.statistic == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return statistic != null ? statistic.hashCode() : 0;
+    }
 }
