@@ -1,4 +1,8 @@
+package sequence;
+
+import bfr.BFR;
 import bfr.BFRBuffer;
+import bfr.Cluster;
 import bfr.Vector;
 import org.junit.Test;
 
@@ -7,25 +11,20 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class SimpleTest extends ITest{
-    private static final String PATH = "src/test/resources/1000.txt";
+public class LoadTest extends ITest {
+    private static final String PATH = "src/test/resources/100_000.txt";
 
-    public static void main (String[] args) throws IOException{
-        new SimpleTest().test();
-        /*
-        [98110985, 38883663, 39387411, 33121129, 27016979, 30959361, 35838415, 37794530, 40389505, 27116819]
-
-         */
+    public static void main (String[] args) throws IOException {
+        new LoadTest().test();
     }
 
     public void test() {
         super.test(PATH);
-        super.combine();
     }
 
     @Test
     public void testOfTheSameResult() {
-       /* ArrayList<Vector> vectors = BFRBuffer.getData(PATH);
+        ArrayList<Vector> vectors = BFRBuffer.getData(PATH);
 
         BFR algorithm = new BFR(ITest.NUMBER_OF_CLUSTERS, vectors);
 
@@ -37,13 +36,13 @@ public class SimpleTest extends ITest{
         algorithm.bfr();
         ArrayList<Cluster> expected = algorithm.getDiscardSet();
 
-        assertEquals(expected, actual);*/
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testSize() {
         ArrayList<Vector> vectors = BFRBuffer.getData(PATH);
-        assertEquals(1000, vectors.size());
+        assertEquals(100000, vectors.size());
         assertEquals(100, vectors.get(0).getCoordinates().size());
     }
 }
