@@ -23,9 +23,8 @@ public class MahalanobisDistance {
         msigma = 0;
 
         for (int i = 0; i < length; i++) {
-            double sigma = (sumsq[i] + Math.pow(coords.get(i), 2) )/ number
-                    - Math.pow(((sum[i] + coords.get(i)) / number), 2);
-            distance += Math.pow(((coords.get(i) - centroid.get(i)) / Math.sqrt(sigma)), 2);
+            double sigma = Math.pow(centroid.get(i) - coords.get(i), 2);
+            distance += Math.pow((coords.get(i) - centroid.get(i)), 2);
             msigma += Math.sqrt(sigma);
         }
         return Math.sqrt(distance);
@@ -40,9 +39,8 @@ public class MahalanobisDistance {
         int length = coords1.size();
 
         for (int i = 0; i < length; i++) {
-            double sigma = (Math.pow(coords1.get(i), 2) + Math.pow(coords2.get(i), 2)) / 2
-                    - Math.pow(((coords1.get(i) + coords2.get(i)) / 2), 2);
-            distance += Math.pow(((coords1.get(i) - coords2.get(i)) / Math.sqrt(sigma)), 2);
+            double sigma = Math.pow((coords1.get(i) - coords2.get(i)), 2);
+            distance += Math.pow((coords1.get(i) - coords2.get(i)), 2);
             msigma += Math.sqrt(sigma);
         }
         return Math.sqrt(distance);
@@ -67,9 +65,8 @@ public class MahalanobisDistance {
         msigma = 0;
 
         for (int i = 0; i < length; i++) {
-            double sigma = (sumsq[i] + Math.pow(cs2_centroid.get(i), 2) )/ number
-                    - Math.pow(((sum[i] + cs2_centroid.get(i)) / number), 2);
-            distance += Math.pow(((cs2_centroid.get(i) - cs1_centroid.get(i)) / Math.sqrt(sigma)), 2);
+            double sigma = Math.pow((cs2_centroid.get(i) - cs1_centroid.get(i)), 2);
+            distance += Math.pow((cs2_centroid.get(i) - cs1_centroid.get(i)), 2);
             msigma += Math.sqrt(sigma);
         }
         return Math.sqrt(distance);

@@ -39,15 +39,15 @@ public class ITest {
         List<List<Vector>> chunks = ListUtils.partition(vectors, chunksSize);
 
         //for (int i = 0; i < 1; i++) {
-            chunks.parallelStream().forEach(element -> {
-                BFR algorithm = new BFR(NUMBER_OF_CLUSTERS, element);
+            //chunks.parallelStream().forEach(element -> {
+                BFR algorithm = new BFR(NUMBER_OF_CLUSTERS, vectors);
 
                 long start = System.nanoTime();
                 algorithm.bfr();
                 results.add(algorithm.getInformation());
                 long end = System.nanoTime();
                 times.add(end - start);
-            });
+            //});
 
         //}7755673005 7836604477
         //3462037790  7666459118

@@ -22,19 +22,21 @@ public class BFR {
         this.retainedSet = new RetainedSet(vectors);
     }
 
-    /*public static void main(String[] args) {
-        for (int i = 0; i < 2; i++) {
-            BFR bfr = new BFR(5, 10000);
+    public static void main(String[] args) {
+        ArrayList<Vector> v = BFRBuffer.getData("src/test/resources/10.txt");
+        for (int i = 0; i < 1; i++) {
+            BFR bfr = new BFR(2, v);
             bfr.init();
             bfr.calculate();
             bfr.finish();
             int res = 0;
+
             for (Cluster ds: bfr.discardSet) {
                 res += ds.getStatistic().getN();
             }
             System.out.println("\nres[" + i + "]: " + res);
         }
-    }*/
+    }
 
     public void bfr() {
         /*init();
@@ -83,6 +85,17 @@ public class BFR {
             discardSet.get(i).updateStatistic(Vector.createRandomPoint(BFRBuffer.MIN, BFRBuffer.MAX));
         }*/
 
+        // Set Centroids for 10.txt
+        /*ArrayList<Double> vector = new ArrayList<>(numberOfAttributes);
+        vector.add((double) 1);
+        vector.add((double) 1);
+
+        ArrayList<Double> vector2 = new ArrayList<>(numberOfAttributes);
+        vector2.add((double) 5);
+        vector2.add((double) 1);
+        discardSet.get(0).updateStatistic(new Vector(vector));
+        discardSet.get(1).updateStatistic(new Vector(vector2));*/
+
         // Set Centroids
         for (int i = 0, j = 1; i < numberOfClusters; i++) {
             ArrayList<Double> vector = new ArrayList<>(numberOfAttributes);
@@ -116,6 +129,8 @@ public class BFR {
                 rsIterator.previous();
                 rsIterator.remove();
             }
+            else rsIterator.previous();
+
         }
         //System.out.println("initCS()");
         //plotClusters();
@@ -137,48 +152,52 @@ public class BFR {
             }
         }
 
-        // watching cs
-        for (int i = 0; i < numberOfClusters; i++) {
-            Cluster ds = discardSet.get(i);
-            Iterator<Cluster> csIterator = compressSet.iterator();
-            while (csIterator.hasNext()) {
-                Cluster cs = csIterator.next();
-                if (ConfidenceInterval.isEntered(cs, ds.getCentroid())) {
-                    ds.updateStatistic(cs);
-                    csIterator.remove();
-                    break;
+        if (!compressSet.isEmpty()) {
+            // watching cs
+            for (int i = 0; i < numberOfClusters; i++) {
+                Cluster ds = discardSet.get(i);
+                Iterator<Cluster> csIterator = compressSet.iterator();
+                while (csIterator.hasNext()) {
+                    Cluster cs = csIterator.next();
+                    if (ConfidenceInterval.isEntered(cs, ds.getCentroid())) {
+                        ds.updateStatistic(cs);
+                        csIterator.remove();
+                        break;
+                    }
                 }
             }
         }
     }
 
     private void assignCS() {
-        Iterator<Vector> rsIterator = retainedSet.getVectors().iterator();
+        if (!compressSet.isEmpty()) {
+            Iterator<Vector> rsIterator = retainedSet.getVectors().iterator();
 
-        while (rsIterator.hasNext()) {
-            Vector vector = rsIterator.next();
-            for (Cluster cs : compressSet) {
-                if (ConfidenceInterval.isEntered(cs, vector)) {
-                    cs.updateStatistic(vector);
-                    rsIterator.remove();
-                    break;
+            while (rsIterator.hasNext()) {
+                Vector vector = rsIterator.next();
+                for (Cluster cs : compressSet) {
+                    if (ConfidenceInterval.isEntered(cs, vector)) {
+                        cs.updateStatistic(vector);
+                        rsIterator.remove();
+                        break;
+                    }
                 }
             }
-        }
 
-        // Merging compressed sets in the CS
-        ListIterator<Cluster> csIterator = compressSet.listIterator();
-        while (csIterator.hasNext()) {
-            Cluster cs1 = csIterator.next();
-            Cluster cs2 = null;
-            if (csIterator.hasNext()) {
-                cs2 = csIterator.next();
-            }
-            if (cs1 == null || cs2 == null) break;
+            // Merging compressed sets in the CS
+            ListIterator<Cluster> csIterator = compressSet.listIterator();
+            while (csIterator.hasNext()) {
+                Cluster cs1 = csIterator.next();
+                Cluster cs2 = null;
+                if (csIterator.hasNext()) {
+                    cs2 = csIterator.next();
+                }
+                if (cs1 == null || cs2 == null) break;
 
-            if (ConfidenceInterval.isEntered(cs1, cs2)) {
-                cs1.updateStatistic(cs2);
-                csIterator.remove();
+                if (ConfidenceInterval.isEntered(cs1, cs2)) {
+                    cs1.updateStatistic(cs2);
+                    csIterator.remove();
+                }
             }
         }
     }
@@ -280,7 +299,7 @@ public class BFR {
         return discardSet;
     }
 
-    private void plotClusters() {/*
+    private void plotClusters() {
         System.out.println("rS: " + retainedSet.getVectors().size());
         System.out.println("discardSet " + discardSet.size());
         for (int i = 0; i < numberOfClusters; i++) {
@@ -290,6 +309,6 @@ public class BFR {
         for (int i = 0; i < compressSet.size() && !compressSet.isEmpty(); i++) {
             System.out.println(compressSet.get(i).toString());
         }
-        System.out.println("+++++++++++++++++++");*/
+        System.out.println("+++++++++++++++++++");
     }
 }
