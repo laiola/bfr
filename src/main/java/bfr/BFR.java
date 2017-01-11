@@ -22,7 +22,7 @@ public class BFR {
         this.retainedSet = new RetainedSet(vectors);
     }
 
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         ArrayList<Vector> v = BFRBuffer.getData("src/test/resources/10.txt");
         for (int i = 0; i < 1; i++) {
             BFR bfr = new BFR(2, v);
@@ -36,7 +36,7 @@ public class BFR {
             }
             System.out.println("\nres[" + i + "]: " + res);
         }
-    }
+    }*/
 
     public void bfr() {
         /*init();
@@ -300,7 +300,7 @@ public class BFR {
     }
 
     private void plotClusters() {
-        System.out.println("rS: " + retainedSet.getVectors().size());
+        /*System.out.println("rS: " + retainedSet.getVectors().size());
         System.out.println("discardSet " + discardSet.size());
         for (int i = 0; i < numberOfClusters; i++) {
             System.out.println(discardSet.get(i).toString());
@@ -309,6 +309,6 @@ public class BFR {
         for (int i = 0; i < compressSet.size() && !compressSet.isEmpty(); i++) {
             System.out.println(compressSet.get(i).toString());
         }
-        System.out.println("+++++++++++++++++++");
+        System.out.println("+++++++++++++++++++");*/
     }
 }

@@ -20,7 +20,7 @@ public class ConfidenceInterval {
         double deviation = sigma / n;
         double standardError = deviation / Math.sqrt(n);
 
-        return distance < 2;
+        return distance < standardError * 2;
     }
 
     public static boolean isEntered(Vector vector1, Vector vector2) {
@@ -33,7 +33,7 @@ public class ConfidenceInterval {
         double deviation = sigma / n;
         double standardError = deviation / Math.sqrt(n);
 
-        return distance < 2;
+        return distance < standardError * 2;
     }
 
     public static boolean isEntered(Cluster cs1, Cluster cs2) {
@@ -46,6 +46,6 @@ public class ConfidenceInterval {
         double deviation = sigma / n;
         double standardError = deviation / Math.sqrt(n);
 
-        return distance < 2;
+        return distance < standardError * 2;
     }
 }
