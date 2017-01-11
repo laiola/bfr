@@ -60,7 +60,6 @@ public class SufficientStatistic {
         //centr();
         return "SufficientStatistic{" +
                 "n=" + n +
-                ", centr=" + Arrays.toString(centroid) +
                 ", sum=" + Arrays.toString(sum) +
                 ", sumsq=" + Arrays.toString(sumsq) +
                 '}';

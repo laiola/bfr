@@ -22,50 +22,13 @@ public class BFR {
         this.retainedSet = new RetainedSet(vectors);
     }
 
-   /* public static void main(String[] args) {
-        ArrayList<Vector> v = BFRBuffer.getData("src/test/resources/10.txt");
-        for (int i = 0; i < 1; i++) {
-            BFR bfr = new BFR(2, v);
-            bfr.init();
-            bfr.calculate();
-            bfr.finish();
-            int res = 0;
-
-            for (Cluster ds: bfr.discardSet) {
-                res += ds.getStatistic().getN();
-            }
-            System.out.println("\nres[" + i + "]: " + res);
-        }
-    }*/
-
     public void bfr() {
-        /*init();
+        init();
         calculate();
         finish();
-        int res = 0;
-        for (Cluster ds: discardSet) {
-            res += ds.getStatistic().getN();
-        }
-        System.out.println("\nres: " + res);*/
-
-        for (int i = 0; i < 1; i++) {
-            init();
-            calculate();
-            finish();
-            int res = 0;
-            /*for (Cluster ds: discardSet) {
-                res += ds.getStatistic().getN();
-            }
-            System.out.println("\nres[" + i + "]: " + res);*/
-        }
     }
 
     public ArrayList<Cluster> getInformation() {
-        /*int i = 1;
-        for (Cluster ds: discardSet) {
-            System.out.println("[" + i + "]: " + ds.getStatistic().getN());
-            i++;
-        }*/
         return discardSet;
     }
 
@@ -132,8 +95,6 @@ public class BFR {
             else rsIterator.previous();
 
         }
-        //System.out.println("initCS()");
-        //plotClusters();
     }
 
     private void assignDS() {
@@ -203,9 +164,7 @@ public class BFR {
     }
 
     private void assignRS() {
-        //System.out.println("before: " + retainedSet.getVectors().size());
         retainedSet.updateRS();
-        //System.out.println("after: " + retainedSet.getVectors().size());
     }
 
     private void finish() {
@@ -255,8 +214,6 @@ public class BFR {
             rsIterator.remove();
             distances = new ArrayList<>();
         }
-
-        plotClusters();
     }
 
     private void calculate() {
@@ -286,9 +243,6 @@ public class BFR {
 
             iteration++;
 
-            //System.out.println("Iteration: " + iteration);
-            //plotClusters();
-
             if (retainedSet.getVectors().isEmpty() || iteration > MAX_ITERATIONS) {
                 finish = true;
             }
@@ -299,16 +253,4 @@ public class BFR {
         return discardSet;
     }
 
-    private void plotClusters() {
-        /*System.out.println("rS: " + retainedSet.getVectors().size());
-        System.out.println("discardSet " + discardSet.size());
-        for (int i = 0; i < numberOfClusters; i++) {
-            System.out.println(discardSet.get(i).toString());
-        }
-        System.out.println("compressSet " + compressSet.size());
-        for (int i = 0; i < compressSet.size() && !compressSet.isEmpty(); i++) {
-            System.out.println(compressSet.get(i).toString());
-        }
-        System.out.println("+++++++++++++++++++");*/
-    }
 }

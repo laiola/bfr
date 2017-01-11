@@ -20,6 +20,12 @@ public class ITest {
             algorithm.bfr();
             long end = System.nanoTime();
             times.add(end - start);
+
+            // Вывод результатов
+            /*ArrayList<Cluster> res = algorithm.getDiscardSet();
+            for (Cluster cluster: res) {
+                System.out.println(cluster.getStatistic().getN());
+            }*/
         }
         System.out.println(times.toString());
     }

@@ -13,7 +13,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class IParallelTest {
     public static final int NUMBER_OF_CLUSTERS = 5;
     private ArrayList<ArrayList<Cluster>> results = new ArrayList<>();
-    private ArrayList<Cluster> result = new ArrayList<>();
     private Long time = 0L;
 
     public  ArrayList<Cluster> combine() {
@@ -30,7 +29,7 @@ public class IParallelTest {
         this.time += end - start;
         System.out.println(time);
 
-        result = results.get(results.size() - 1); // getting the last one
+        ArrayList<Cluster> result = results.get(results.size() - 1);
         int m = 1;
         int res = 0;
 
@@ -63,7 +62,6 @@ public class IParallelTest {
         });
 
         this.time = times.stream().reduce((s1, s2) -> s1 + s2).orElse(0L);
-        // System.out.println(times.toString());
-        //System.out.println(times.stream().reduce((s1, s2) -> s1 + s2).orElse(null ));
+        System.out.println(times.toString());
     }
 }

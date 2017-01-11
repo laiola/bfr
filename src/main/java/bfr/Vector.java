@@ -23,7 +23,7 @@ public class Vector {
         int n = BFR.NUMBER_OF_ATTRIBUTES ;
         ArrayList<Double> result = new ArrayList<>(n);
 
-        for (int i = 0, j = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             result.add(min + (max - min) * r.nextDouble());
         }
         return new Vector(result);
