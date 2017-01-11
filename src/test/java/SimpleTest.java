@@ -22,6 +22,7 @@ public class SimpleTest extends ITest{
 
     public void test() {
         super.test(PATH);
+        super.combine();
     }
 
     @Test

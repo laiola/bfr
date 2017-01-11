@@ -2,6 +2,7 @@ package bfr;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 
 public class BFR {
@@ -13,7 +14,7 @@ public class BFR {
     private int numberOfClusters;
     private int numberOfAttributes;
 
-    public BFR(int numberOfClusters, ArrayList<Vector> vectors) {
+    public BFR(int numberOfClusters, List<Vector> vectors) {
         this.numberOfClusters = numberOfClusters;
         this.numberOfAttributes = vectors.get(0).getCoordinates().size();
         this.discardSet = new ArrayList<>();
@@ -50,19 +51,20 @@ public class BFR {
             calculate();
             finish();
             int res = 0;
-            for (Cluster ds: discardSet) {
+            /*for (Cluster ds: discardSet) {
                 res += ds.getStatistic().getN();
             }
-            //System.out.println("\nres[" + i + "]: " + res);
+            System.out.println("\nres[" + i + "]: " + res);*/
         }
     }
 
-    public void getInformation() {
-        int i = 1;
+    public ArrayList<Cluster> getInformation() {
+        /*int i = 1;
         for (Cluster ds: discardSet) {
             System.out.println("[" + i + "]: " + ds.getStatistic().getN());
             i++;
-        }
+        }*/
+        return discardSet;
     }
 
     //Initializes the process
