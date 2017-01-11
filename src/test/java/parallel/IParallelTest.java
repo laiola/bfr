@@ -15,7 +15,9 @@ public class IParallelTest {
     private ArrayList<ArrayList<Cluster>> results = new ArrayList<>();
     private ArrayList<Cluster> result = new ArrayList<>();
     private Long time = 0L;
+
     public  ArrayList<Cluster> combine() {
+        long start = System.nanoTime();
         for (int i = 0, size = results.size() - 1; i < size; i++) {
             ArrayList<Cluster> clusters1 = results.get(i);
             ArrayList<Cluster> clusters2 = results.get(i + 1);
@@ -24,7 +26,11 @@ public class IParallelTest {
                 clusters2.get(j).updateStatistic(clusters1.get(j));
             }
         }
-        result = results.get(results.size() - 1);
+        long end = System.nanoTime();
+        this.time += end - start;
+        System.out.println(time);
+
+        result = results.get(results.size() - 1); // getting the last one
         int m = 1;
         int res = 0;
 
@@ -42,7 +48,7 @@ public class IParallelTest {
         CopyOnWriteArrayList<Long> times = new CopyOnWriteArrayList<>();
         ArrayList<Vector> vectors = BFRBuffer.getData(path);
 
-        int numberOfThreads = 4;
+        int numberOfThreads = 8;
         int chunksSize = vectors.size() / numberOfThreads;
         List<List<Vector>> chunks = ListUtils.partition(vectors, chunksSize);
 
@@ -56,8 +62,8 @@ public class IParallelTest {
             times.add(end - start);
         });
 
-        time = times.stream().reduce((s1, s2) -> s1 + s2).orElse(0L);
-        System.out.println(times.toString());
-        System.out.println(times.stream().reduce((s1, s2) -> s1 + s2).orElse(null ));
+        this.time = times.stream().reduce((s1, s2) -> s1 + s2).orElse(0L);
+        // System.out.println(times.toString());
+        //System.out.println(times.stream().reduce((s1, s2) -> s1 + s2).orElse(null ));
     }
 }
